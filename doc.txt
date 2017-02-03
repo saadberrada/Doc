@@ -1,0 +1,83 @@
+/*************/doctrine
+https://www.youtube.com/watch?v=3d2WeDSOgQ0
+http://www.zainabed.com/2014/10/doctrine2-installation-configuration.html
+/******************************/
+/**/1/**/
+composer.json
+------
+{
+    "require": {
+        "doctrine/orm": "*"
+    }
+}
+
+cd projet
+
+curl -sS https://getcomposer.org/installer | php
+
+php composer.phar install
+
+/**/2/**/
+configuration.php
+------
+<?php
+// bootstrap.php
+require_once "vendor/autoload.php";
+
+use Doctrine\ORM\Tools\Setup;
+use Doctrine\ORM\EntityManager;
+
+$paths = array("src");
+$isDevMode = false;
+
+// the connection configuration
+$dbParams = array(
+    'driver'   => 'pdo_mysql',
+    'user'     => 'root',
+    'password' => '',
+    'dbname'   => 'cloud_stock',
+);
+
+$config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
+$entityManager = EntityManager::create($dbParams, $config);
+?>
+
+mkdir Entity
+create class with annotations
+
+/***/3/****************************************/
+cli-config.php
+----
+<?php
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
+
+// replace with file to your own project bootstrap
+require_once 'index.php';
+
+// replace with mechanism to retrieve EntityManager in your app
+//$entityManager = GetEntityManager();
+
+return \Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($entityManager);
+?>
+
+/**/4/*********************************/
+cmd 
+vendor/bin/doctrine
+vendor/bin/doctrine orm:schema-tool:create
+vendor/bin/doctrine orm:schema-tool:create --dump-sql
+
+vendor/bin/doctrine orm:schema-tool:update --force
+
+/*******/
+
+vendor\bin\doctrine orm:convert-mapping -f --from-database annotation Entity/
+
+
+vendor\bin\doctrine orm:generate-entities --generate-annotations="true" Entity/
+
+
+vendor\bin\doctrine orm:generate-entities --generate-annotations=true --generate-methods=true Entity/
+
+
+vendor\bin\doctrine orm:generate-entities --update-entities=true --generate-methods=true
+Entity/
