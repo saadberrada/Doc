@@ -1,5 +1,6 @@
 {
     "require": {
-        "doctrine/orm": "*"
+        "doctrine/orm": "*",
+        "base-reality/php-to-javascript": "0.1.16" 
     }
 }

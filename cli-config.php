@@ -3,7 +3,7 @@
 use Doctrine\ORM\Tools\Console\ConsolensoleRunner;
 
 // replace with file to your own project bootstrap
-require_once 'config.php';
+require_once 'C:/xampp/htdocs/webStock/Doctrine/config.php';
 
 // replace with mechanism to retrieve EntityManager in your app
 //$entityManager = GetEntityManager();

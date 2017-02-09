@@ -31,7 +31,7 @@ class CloudAlertes
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="datetime", nullable=false)
+     * @ORM\Column(name="date", type="datetime", nullable=true)
      */
     private $date = 'CURRENT_TIMESTAMP';
 
@@ -52,7 +52,7 @@ class CloudAlertes
     /**
      * @var string
      *
-     * @ORM\Column(name="status", type="string", length=255, nullable=false)
+     * @ORM\Column(name="status", type="string", length=255, nullable=true)
      */
     private $status;
 
@@ -95,7 +95,7 @@ class CloudAlertes
     /**
      * Set date
      *
-     * @param string $date
+     * @param \DateTime $date
      *
      * @return CloudAlertes
      */
@@ -109,7 +109,7 @@ class CloudAlertes
     /**
      * Get date
      *
-     * @return string
+     * @return \DateTime
      */
     public function getDate()
     {

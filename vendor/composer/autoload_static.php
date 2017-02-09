@@ -66,6 +66,13 @@ class ComposerStaticInit94594d6ccc6344050ebe9dab45f936ad
     );
 
     public static $prefixesPsr0 = array (
+        'P' => 
+        array (
+            'PHPToJavascript' => 
+            array (
+                0 => __DIR__ . '/..' . '/base-reality/php-to-javascript/src',
+            ),
+        ),
         'D' => 
         array (
             'Doctrine\\ORM\\' => 

@@ -81,3 +81,5 @@ vendor\bin\doctrine orm:generate-entities --generate-annotations=true --generate
 
 vendor\bin\doctrine orm:generate-entities --update-entities=true --generate-methods=true
 Entity/
+
+vendor\bin\doctrine --version

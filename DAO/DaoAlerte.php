@@ -1,21 +1,43 @@
 <?php
 
-include './config.php';
+include 'config.php';
 include "Entity/CloudAlertes.php";
+require_once ('class.php');
+//include "Entity/CloudCustomer.php";
+//include "Entity/CloudStock.php";
+//include "Entity/EntitySerializer.php";
 
 
-class AlerteDao extends CloudAlertes
+class AlerteDao extends AbsClass
 {
-    function __construct($Em) {
-        //$this->User = new User();
-        $this->em = $Em;
+    function __construct() {
+       // $this->setEntityName();
     }
+
+    public function setEntityName() {
+        // $this->customer = new CloudAlertes();
+        // parent::init($this->customer);
+
+    }
+    // function __construct($Em) {
+    //     //$this->User = new User();
+    //     $this->em = $Em;
+    // }
 
     // private $en;
     // function __construct() {
     //     $this->User = new User();
     //     $this->en = $this->entityManager;
     // }
+
+    function testa ()
+    {
+        echo get_class();
+    }
+
+    public function getAll() {
+        return parent::getAll();
+    }
 
     function get_alerte($id)
     {
@@ -45,18 +67,29 @@ class AlerteDao extends CloudAlertes
     function get_all()
     {   try
         {   
-            $alertes = $this->em->getRepository('CloudAlertes')->findAll();
-            $response = array();
-            foreach ($alertes as $alerte) {
-                $data = [
-                'alerte' => [
-                    'titre' => $alerte->getTitre()
-                    // other fields
-                ]
-            ];
-            }
-            return json_encode($data);
-            
+            $alertes = $this->em->getRepository('CloudStock')->findAll();
+
+            // $response = array();
+            // foreach ($alertes as $alerte) {
+            //     $response[] = array(
+            //         'type' => $alerte->getTitre()
+            //         // other fields
+            //  );
+            // }
+            // $tmp = array(
+            //      "alerte" => $response
+            // );
+            // return  json_encode($tmp);
+
+            //header('Content-Type: application/json');
+            //$response = json_encode($alertes);
+            return   $alertes;
+
+            //  $alertes = array_map(function($user) {
+            //     return $this->convertToArray($user); },
+            //     $alertes);
+            // $data = json_encode($alertes);
+            // return json_encode($data);
         }
         catch(Exception $err)
         {
@@ -71,7 +104,7 @@ class AlerteDao extends CloudAlertes
         {
             $query = $this->em->createQueryBuilder()
                             ->select("count(a)")
-                            ->from("CloudAlertes", "a")
+                            ->from("CloudStock", "a")
                             ->getQuery();
             return $query->getSingleScalarResult();
         }
@@ -80,6 +113,105 @@ class AlerteDao extends CloudAlertes
             return 0;
         }
     }
+
+
+    function getAlla() {
+        try {
+            //$records = $this->entityManager->getRepository($this->entityname)->findAll();
+            $query = $this->em->createQueryBuilder()
+            ->select("c")
+            ->from("CloudCustomer","c")
+            ->getQuery()->getArrayResult();
+            //->execute();
+        } catch (Exception $e) {
+            echo "Exception : ".$e->getMessage();
+        }
+        return json_encode($query);
+    }
+
+
+     function test()
+     {
+        try
+        {
+            //CloudCustomer
+            $query = $this->em->createQueryBuilder()
+                            ->select('a')
+                            ->from('CloudAlertes','a');
+            //$query->setMaxResults(10);
+            $entites = $query->getQuery()->getArrayResult();
+           // var_dump($entites);
+             
+             //$entites = $query->getQuery()->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY)
+            
+            //header('Content-Type: application/json');
+            $response = json_encode($entites,JSON_PRETTY_PRINT);
+           
+             
+              // $result = 
+              //  serialize($entites); 
+
+            //$serializer = serialize(array_values($entites), 'json');
+
+            
+            return $response;
+           
+
+            // foreach($entites as $entite)
+            // {
+            //     var_dump($entite['titre']);
+            //    //print $entite->getAttribut();
+            // }
+
+            /*****/
+
+            // $query = $this->em->createQuery("SELECT id FROM CloudAlertes");
+            // $tests = $query->getArrayResult();
+            // print_r($tests);
+
+            /***/
+            //$query = $this->em->createQuery('SELECT * FROM cloud_stock');
+            //return $query->getArrayResult();
+        }
+        catch(Exception $err)
+        {
+            return 0;
+        }
+     }
+
+    function testSingle($id)
+     {
+        try
+        {
+            $query = $this->em->createQueryBuilder()
+                            ->select("a")
+                            ->from("CloudStock", "a")
+                            ->where('a.id = :id');
+            $query->setParameter('id', $id);
+            //$entites = $query->getQuery()->getSingleScalarResult();
+            //$entites = $query->getQuery()->getSingleResult();
+            $entites = $query->getQuery()->getArrayResult();
+            return $entites;
+
+            // foreach($entites as $entite)
+            // {
+            //     var_dump($entite['titre']);
+            //    //print $entite->getAttribut();
+            // }
+
+            /*****/
+
+            // $query = $this->em->createQuery("SELECT id FROM CloudAlertes");
+            // $tests = $query->getArrayResult();
+            // print_r($tests);
+
+        }
+        catch(Exception $err)
+        {
+            return 0;
+        }
+     }
+
 
     function add_alerte($data,$id=NULL)
     {    
@@ -124,6 +256,7 @@ class AlerteDao extends CloudAlertes
             {
                 $entity = $this->em->getPartialReference("CloudAlertes", $id);
                 $this->em->remove($entity);
+                ///echo "delete ->  " .$id;
             }
             $this->em->flush();
             return TRUE;
